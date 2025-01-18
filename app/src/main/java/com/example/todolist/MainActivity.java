@@ -1,18 +1,18 @@
-package com.armanidrisi.todolost;
+package com.example.todolist;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.graphics.Color;
 import android.view.View;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.LinearLayoutManager;
 import java.util.ArrayList;
-import com.armanidrisi.todolost.TodoAdapter;
-import com.armanidrisi.todolost.TodoDBHelper;
+
 import java.util.List;
 import android.widget.ImageButton;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivity extends Activity { 
 	TodoDBHelper todoDBHelper;
