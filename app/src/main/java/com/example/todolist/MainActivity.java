@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class MainActivity extends Activity {
 
 	private EditText taskNameEditText, taskDescriptionEditText;
-	private Button addTaskButton, viewTasksButton;
+	private Button addTaskButton, viewPendingTasksButton,viewCompletedTasksButton;
 	private RecyclerView tasksRecyclerView;
 
 	private TodoDBHelper dbHelper;
@@ -41,11 +41,17 @@ public class MainActivity extends Activity {
 		taskNameEditText = findViewById(R.id.taskNameEditText);
 		taskDescriptionEditText = findViewById(R.id.taskDescriptionEditText);
 		addTaskButton = findViewById(R.id.addTaskButton);
-		viewTasksButton = findViewById(R.id.viewTasksButton);
+		viewPendingTasksButton = findViewById(R.id.viewPendingTasksButton);
+		viewCompletedTasksButton = findViewById(R.id.viewCompletedTasksButton);
 		tasksRecyclerView = findViewById(R.id.tasksRecyclerView);
 
-
-
+		dbHelper = new TodoDBHelper(this);
+		taskList = new ArrayList<>();
+		taskList.addAll(dbHelper.getAllTasks());
+		taskAdapter = new TodoAdapter(this, taskList, dbHelper);
+		tasksRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+		tasksRecyclerView.setAdapter(taskAdapter);
+		taskAdapter.notifyDataSetChanged();
 
 
 		addTaskButton.setOnClickListener(v -> {
@@ -55,19 +61,38 @@ public class MainActivity extends Activity {
 			String status = "Pending";
 
 			if (!name.isEmpty() && !description.isEmpty()) {
-				dbHelper.addTask(name, description, time, status);
-				Toast.makeText(this, "Task Added", Toast.LENGTH_SHORT).show();
+				if(dbHelper.addTask(name, description, time, status)){
+					Toast.makeText(this, "Task Added", Toast.LENGTH_SHORT).show();
+				}
+				else{
+					Toast.makeText(this, "Failed to add task", Toast.LENGTH_SHORT).show();
+				}
+
 				taskNameEditText.setText("");
 				taskDescriptionEditText.setText("");
-				Toast.makeText(this, "Name: "+name+"\nDescription: "+description+"\nTime: "+time+"\n Status: "+status, Toast.LENGTH_SHORT).show();
+				dbHelper = new TodoDBHelper(this);
+				taskList = new ArrayList<>();
+				taskList.addAll(dbHelper.getAllTasks());
+				taskAdapter = new TodoAdapter(this, taskList, dbHelper);
+				tasksRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+				tasksRecyclerView.setAdapter(taskAdapter);
+				taskAdapter.notifyDataSetChanged();
 			} else {
 				Toast.makeText(this, "Enter all details", Toast.LENGTH_SHORT).show();
 			}
 		});
 
-		viewTasksButton.setOnClickListener(v -> {
+		viewPendingTasksButton.setOnClickListener(v -> {
 			taskList.clear();
-			taskList.addAll(dbHelper.getAllTasks());
+			taskList.addAll(dbHelper.getPendingTasks());
+			taskAdapter = new TodoAdapter(this, taskList, dbHelper);
+			tasksRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+			tasksRecyclerView.setAdapter(taskAdapter);
+			taskAdapter.notifyDataSetChanged();
+		});
+		viewCompletedTasksButton.setOnClickListener(v -> {
+			taskList.clear();
+			taskList.addAll(dbHelper.getCompletedTasks());
 			taskAdapter = new TodoAdapter(this, taskList, dbHelper);
 			tasksRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 			tasksRecyclerView.setAdapter(taskAdapter);

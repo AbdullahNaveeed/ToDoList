@@ -57,15 +57,10 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder>{
             showEditTaskDialog(task, holder.getAdapterPosition());
         });
         holder.deleteTaskButton.setOnClickListener(v -> {
-            // Delete task from the database
             todoDBHelper.deleteTask(task.getId());
-
-            // Remove the task from the list and notify adapter
             taskList.remove(position);
             notifyItemRemoved(position);
             notifyItemRangeChanged(position, taskList.size());
-
-            // Show a confirmation message
             Toast.makeText(context, "Task Deleted", Toast.LENGTH_SHORT).show();
         });
     }
@@ -96,11 +91,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder>{
             if (!updatedName.isEmpty() && !updatedDescription.isEmpty()) {
                 task.setName(updatedName);
                 task.setDescription(updatedDescription);
-
-                // Update the task in the database
                 todoDBHelper.updateTask(task.getId(), updatedName, updatedDescription, task.getTime(), task.getStatus());
-
-                // Update the task in the list and notify adapter
                 taskList.set(position, task);
                 notifyItemChanged(position);
 

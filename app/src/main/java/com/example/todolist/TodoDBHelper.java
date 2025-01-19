@@ -33,7 +33,7 @@ public  class TodoDBHelper extends SQLiteOpenHelper {
         values.put("status", status);
         long result = db.insert("tasks", null, values);
         db.close();
-        return result != -1; // Return true if insert is successful
+        return result != -1;
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -84,13 +84,64 @@ public  class TodoDBHelper extends SQLiteOpenHelper {
         db.update("tasks", values, "id=?", new String[]{String.valueOf(id)});
     }
 
-    public Cursor getCompletedTasks() {
+    public List<Todo>  getCompletedTasks() {
+        List<Todo> todoItems = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM tasks WHERE status='Completed'", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM tasks WHERE status='Completed'", null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(0);
+                String name = cursor.getString(1);
+                String description = cursor.getString(2);
+                String time = cursor.getString(3);
+                String status = cursor.getString(4);
+
+                Todo todoItem = new Todo(id,name,description,time,status);
+                todoItem.setId(id);
+                todoItem.setName(name);
+                todoItem.setDescription(description);
+                todoItem.setTime(time);
+                todoItem.setStatus(status);
+
+                todoItems.add(todoItem);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return todoItems;
+
     }
-    public Cursor getPendingTasks() {
+    public List<Todo>  getPendingTasks() {
+        List<Todo> todoItems = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM tasks WHERE status='Pending'", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM tasks WHERE status='Pending'", null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(0);
+                String name = cursor.getString(1);
+                String description = cursor.getString(2);
+                String time = cursor.getString(3);
+                String status = cursor.getString(4);
+
+                Todo todoItem = new Todo(id,name,description,time,status);
+                todoItem.setId(id);
+                todoItem.setName(name);
+                todoItem.setDescription(description);
+                todoItem.setTime(time);
+                todoItem.setStatus(status);
+
+                todoItems.add(todoItem);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return todoItems;
+
     }
+
 
 }
