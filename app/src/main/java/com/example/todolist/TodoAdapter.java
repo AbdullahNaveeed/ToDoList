@@ -70,7 +70,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder>{
         return taskList.size();
     }
     private void showEditTaskDialog(Todo task, int position) {
-        // Create a dialog to edit task details
+
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
         View dialogView = LayoutInflater.from(context).inflate(R.layout.edit_task_dialog, null);
         builder.setView(dialogView);
@@ -79,7 +79,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder>{
         EditText editTaskDescription = dialogView.findViewById(R.id.editTaskDescription);
         Button saveButton = dialogView.findViewById(R.id.saveButton);
 
-        // Set current values
+
         editTaskName.setText(task.getName());
         editTaskDescription.setText(task.getDescription());
 
