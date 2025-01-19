@@ -26,6 +26,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder>{
         this.context = context;
         this.taskList = taskList;
         this.todoDBHelper = dbHelper;
+        this.mInflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -41,6 +42,13 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder>{
         holder.taskDescription.setText(task.getDescription());
         holder.taskTime.setText(task.getTime());
         holder.taskStatus.setText(task.getStatus());
+        holder.taskCheckBox.setChecked("Completed".equals(task.getStatus()));
+        holder.taskCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            String newStatus = isChecked ? "Completed" : "Pending";
+            todoDBHelper.updateTask(task.getId(), task.getName(), task.getDescription(), task.getTime(), newStatus);
+            task.setStatus(newStatus); // Update the status locally
+            notifyItemChanged(position);
+        });
     }
 
     @Override
@@ -50,6 +58,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder>{
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView taskName, taskDescription, taskTime, taskStatus;
+        CheckBox taskCheckBox;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -57,6 +66,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder>{
             taskDescription = itemView.findViewById(R.id.taskDescriptionTextView);
             taskTime = itemView.findViewById(R.id.taskTimeTextView);
             taskStatus = itemView.findViewById(R.id.taskStatusTextView);
+            taskCheckBox = itemView.findViewById(R.id.taskCheckBox);
         }
     }
 

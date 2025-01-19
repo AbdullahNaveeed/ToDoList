@@ -47,11 +47,11 @@ public  class TodoDBHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                int id = cursor.getInt(cursor.getInt(0));
-                String name = cursor.getString(cursor.getInt(1));
-                String description = cursor.getString(cursor.getInt(2));
-                String time = cursor.getString(cursor.getInt(2));
-                String status = cursor.getString(cursor.getInt(3));
+                int id = cursor.getInt(0);
+                String name = cursor.getString(1);
+                String description = cursor.getString(2);
+                String time = cursor.getString(3);
+                String status = cursor.getString(4);
 
                 Todo todoItem = new Todo(id,name,description,time,status);
                 todoItem.setId(id);

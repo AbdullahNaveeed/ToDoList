@@ -36,17 +36,15 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//		getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-//		getWindow().setStatusBarColor(getResources().getColor(R.color.myPrimary));
-
+		getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+		getWindow().setStatusBarColor(getResources().getColor(R.color.myPrimary));
 		taskNameEditText = findViewById(R.id.taskNameEditText);
 		taskDescriptionEditText = findViewById(R.id.taskDescriptionEditText);
 		addTaskButton = findViewById(R.id.addTaskButton);
 		viewTasksButton = findViewById(R.id.viewTasksButton);
 		tasksRecyclerView = findViewById(R.id.tasksRecyclerView);
 
-		dbHelper = new TodoDBHelper(this);
-		taskList = dbHelper.getAllTasks();
+
 
 
 
@@ -61,16 +59,21 @@ public class MainActivity extends Activity {
 				Toast.makeText(this, "Task Added", Toast.LENGTH_SHORT).show();
 				taskNameEditText.setText("");
 				taskDescriptionEditText.setText("");
+				Toast.makeText(this, "Name: "+name+"\nDescription: "+description+"\nTime: "+time+"\n Status: "+status, Toast.LENGTH_SHORT).show();
 			} else {
 				Toast.makeText(this, "Enter all details", Toast.LENGTH_SHORT).show();
 			}
 		});
 
 		viewTasksButton.setOnClickListener(v -> {
-			taskAdapter = new TodoAdapter(this, taskList,dbHelper);
+			taskList.clear();
+			taskList.addAll(dbHelper.getAllTasks());
+			taskAdapter = new TodoAdapter(this, taskList, dbHelper);
 			tasksRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 			tasksRecyclerView.setAdapter(taskAdapter);
+			taskAdapter.notifyDataSetChanged();
 		});
+
 
     }
 }

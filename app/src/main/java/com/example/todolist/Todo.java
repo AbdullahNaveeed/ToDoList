@@ -5,7 +5,7 @@ public class Todo {
     private String description;
     private String time;
     private String status;
-    private long id;
+    private int id;
 
 
 
@@ -50,11 +50,11 @@ public class Todo {
         this.status = status;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 }
