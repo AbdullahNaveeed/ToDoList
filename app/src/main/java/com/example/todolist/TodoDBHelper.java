@@ -72,6 +72,7 @@ public  class TodoDBHelper extends SQLiteOpenHelper {
     public void deleteTask(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete("tasks", "id=?", new String[]{String.valueOf(id)});
+        db.close();
     }
     public void updateTask(int id, String name, String description, String time, String status) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -82,6 +83,7 @@ public  class TodoDBHelper extends SQLiteOpenHelper {
         values.put("status", status);
         db.update("tasks", values, "id=?", new String[]{String.valueOf(id)});
     }
+
     public Cursor getCompletedTasks() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM tasks WHERE status='Completed'", null);

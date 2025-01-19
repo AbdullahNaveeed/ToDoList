@@ -1,50 +1,111 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@drawable/rounded_bg_2"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:elevation="4dp"
+    android:layout_margin="8dp">
 
-    <TextView
-        android:id="@+id/taskNameTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Task Name"
-        android:textStyle="bold"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/taskDescriptionTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Task Description" />
-
+    <!-- Task Title and Action Buttons -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="10">
+
+        <!-- Task Name -->
+        <TextView
+            android:id="@+id/taskNameTextView"
+            android:layout_width="0dp"
+            android:layout_weight="8"
+            android:layout_height="wrap_content"
+            android:text="Task Name"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <!-- Edit Button -->
+        <ImageButton
+            android:id="@+id/editTaskButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_edit"
+            android:contentDescription="Edit Task"
+            android:background="?attr/selectableItemBackground"
+            android:layout_marginEnd="4dp"
+            app:tint="#000000" />
+
+        <!-- Delete Button -->
+        <ImageButton
+            android:id="@+id/deleteTaskButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_delete"
+            android:contentDescription="Delete Task"
+            android:background="?attr/selectableItemBackground"
+            android:layout_marginEnd="4dp" />
+    </LinearLayout>
+
+    <!-- Task Description -->
+    <TextView
+        android:id="@+id/taskDescriptionTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Task Description"
+        android:textColor="#E96E6767"
+        android:textSize="14sp"
+        android:maxLines="2"
+        android:ellipsize="end" />
+
+    <!-- Task Details and Checkbox -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <!-- Task Time -->
         <TextView
             android:id="@+id/taskTimeTextView"
             android:layout_width="0dp"
             android:layout_weight="5"
-            android:gravity="start"
             android:layout_height="wrap_content"
-            android:text="Task Time" />
+            android:gravity="start"
+
+            android:text="Task Time"
+            android:textColor="#000"
+            android:textSize="14sp" />
+
+        <!-- Task Status -->
         <TextView
             android:id="@+id/taskStatusTextView"
             android:layout_width="0dp"
-            android:layout_weight="5"
-            android:gravity="end"
+            android:layout_weight="4"
             android:layout_height="wrap_content"
-            android:text="Task Status" />
+            android:gravity="end"
+            android:text="Task Status"
+            android:textColor="#059A0B"
+            android:textStyle="bold"
+            android:textSize="14sp" />
+
+        <!-- Checkbox -->
         <CheckBox
             android:id="@+id/taskCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp" />
-
+            android:layout_marginStart="8dp"
+            android:layout_gravity="center_vertical"
+            android:buttonTint="#0823B8" />
     </LinearLayout>
 
 </LinearLayout>
