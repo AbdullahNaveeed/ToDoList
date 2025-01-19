@@ -1,32 +1,44 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:background="@drawable/rounded_bg_2"
+    android:padding="16dp">
 
     <TextView
-        android:id="@+id/taskName"
-        android:layout_width="wrap_content"
+        android:id="@+id/taskNameTextView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Task Name"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/taskDescription"
-        android:layout_width="wrap_content"
+        android:id="@+id/taskDescriptionTextView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Task Description" />
 
-    <TextView
-        android:id="@+id/taskTime"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Time" />
+        android:orientation="horizontal"
+        android:weightSum="10">
+        <TextView
+            android:id="@+id/taskTimeTextView"
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:gravity="start"
+            android:layout_height="wrap_content"
+            android:text="Task Time" />
+        <TextView
+            android:id="@+id/taskStatusTextView"
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:gravity="end"
+            android:layout_height="wrap_content"
+            android:text="Task Status" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/taskStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Status" />
 </LinearLayout>

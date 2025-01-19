@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -17,14 +18,14 @@ import java.util.List;
 public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder>{
 
     private Context context;
-    private ArrayList<Todo> taskList;
-
+    private TodoDBHelper todoDBHelper;
+    private List<Todo> taskList;
     private LayoutInflater mInflater;
 
-
-    public TodoAdapter(Context context, ArrayList<Todo> taskList) {
+    public TodoAdapter(Context context, List<Todo> taskList,TodoDBHelper dbHelper) {
         this.context = context;
         this.taskList = taskList;
+        this.todoDBHelper = dbHelper;
     }
 
     @Override
@@ -52,10 +53,10 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder>{
 
         public ViewHolder(View itemView) {
             super(itemView);
-            taskName = itemView.findViewById(R.id.taskName);
-            taskDescription = itemView.findViewById(R.id.taskDescription);
-            taskTime = itemView.findViewById(R.id.taskTime);
-            taskStatus = itemView.findViewById(R.id.taskStatus);
+            taskName = itemView.findViewById(R.id.taskNameTextView);
+            taskDescription = itemView.findViewById(R.id.taskDescriptionTextView);
+            taskTime = itemView.findViewById(R.id.taskTimeTextView);
+            taskStatus = itemView.findViewById(R.id.taskStatusTextView);
         }
     }
 

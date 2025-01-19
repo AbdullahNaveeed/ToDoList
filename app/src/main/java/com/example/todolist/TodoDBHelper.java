@@ -32,16 +32,42 @@ public  class TodoDBHelper extends SQLiteOpenHelper {
         values.put("time", time);
         values.put("status", status);
         long result = db.insert("tasks", null, values);
+        db.close();
         return result != -1; // Return true if insert is successful
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS Todos;");
+        db.execSQL("DROP TABLE IF EXISTS tasks;");
         onCreate(db);
     }
-    public Cursor getAllTasks() {
+    public List<Todo> getAllTasks() {
+        List<Todo> todoItems = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM tasks", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM tasks", null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(cursor.getInt(0));
+                String name = cursor.getString(cursor.getInt(1));
+                String description = cursor.getString(cursor.getInt(2));
+                String time = cursor.getString(cursor.getInt(2));
+                String status = cursor.getString(cursor.getInt(3));
+
+                Todo todoItem = new Todo(id,name,description,time,status);
+                todoItem.setId(id);
+                todoItem.setName(name);
+                todoItem.setDescription(description);
+                todoItem.setTime(time);
+                todoItem.setStatus(status);
+
+                todoItems.add(todoItem);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return todoItems;
+
     }
     public void deleteTask(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -64,59 +90,5 @@ public  class TodoDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM tasks WHERE status='Pending'", null);
     }
-//    public List<Todo> getAllTodoItems() {
-//        List<Todo> todoItems = new ArrayList<>();
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        Cursor cursor = db.rawQuery("SELECT * FROM Todos", null);
-//
-//        if (cursor.moveToFirst()) {
-//            do {
-//                long id = cursor.getLong(cursor.getInt(0));
-//                String name = cursor.getString(cursor.getInt(1));
-//                int description = cursor.getInt(cursor.getInt(2));
-//                int time = cursor.getInt(cursor.getInt(3));
-//                int status = cursor.getInt(cursor.getInt(4));
-//                boolean completed = completedInt == 1;
-//
-//                Todo todoItem = new Todo(task, completed);
-//                todoItem.setId(id);
-//                todoItem.setCompleted(completed);
-//
-//                todoItems.add(todoItem);
-//            } while (cursor.moveToNext());
-//        }
-//
-//        cursor.close();
-//        db.close();
-//        return todoItems;
-//    }
-//
-//    public long insertTodoItem(String name, String description, String time, String status) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        ContentValues values = new ContentValues();
-//        values.put("name", name);
-//        values.put("description", description);
-//        values.put("time", time);
-//        values.put("status", status);
-//        long itemId = db.insert("Todos", null, values);
-//        db.close();
-//        return itemId;
-//    }
-//
-//
-//
-//    public int updateTodoItemStatus(long itemId, boolean completed) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        ContentValues values = new ContentValues();
-//        values.put("completed", completed ? 1 : 0);
-//        int rowsAffected = db.update("Todos", values, "_id=?", new String[]{String.valueOf(itemId)});
-//        db.close();
-//        return rowsAffected;
-//    }
-//
-//    public void deleteTodoItem(long todoId) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        db.delete("Todos", "_id" +" = ?", new String[]{String.valueOf(todoId)});
-//        db.close();
-//    }
+
 }

@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.EditText;
@@ -27,7 +29,7 @@ public class MainActivity extends Activity {
 
 	private TodoDBHelper dbHelper;
 	private TodoAdapter taskAdapter;
-	private ArrayList<Todo> taskList;
+	private List<Todo> taskList;
 
 
     @Override
@@ -44,7 +46,7 @@ public class MainActivity extends Activity {
 		tasksRecyclerView = findViewById(R.id.tasksRecyclerView);
 
 		dbHelper = new TodoDBHelper(this);
-		taskList = new ArrayList<Todo>();
+		taskList = dbHelper.getAllTasks();
 
 
 
@@ -63,57 +65,12 @@ public class MainActivity extends Activity {
 				Toast.makeText(this, "Enter all details", Toast.LENGTH_SHORT).show();
 			}
 		});
-		viewTasksButton.setOnClickListener(v -> {
-			taskList.clear();
-			Cursor cursor = dbHelper.getAllTasks();
-			if (cursor.moveToFirst()) {
-				do {
-					taskList.add(new Todo(
-							cursor.getInt(0),
-							cursor.getString(1),
-							cursor.getString(2),
-							cursor.getString(3),
-							cursor.getString(4)
-					));
-				} while (cursor.moveToNext());
-			}
-			cursor.close();
 
-			taskAdapter = new TodoAdapter(this, taskList);
+		viewTasksButton.setOnClickListener(v -> {
+			taskAdapter = new TodoAdapter(this, taskList,dbHelper);
 			tasksRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 			tasksRecyclerView.setAdapter(taskAdapter);
 		});
 
-//		List<Todo> todos = todoDBHelper.getAllTasks();
-//
-//		recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//		todoAdapter =  new TodoAdapter(this, todos, todoDBHelper);
-//		recyclerView.setAdapter(todoAdapter);
-
-//		addButton.setOnClickListener(new View.OnClickListener() {
-//				@Override
-//				public void onClick(View view) {
-//					String text = addEditText.getText().toString();
-//
-//					if (!text.isEmpty()) {
-//						long itemId = todoDBHelper.insertTodoItem(text, false);
-//
-//						if (itemId != -1) {
-//							Todo newTodo = new Todo(text, false);
-//							todoAdapter.addItem(newTodo);
-//
-//							int position = todoAdapter.getItemCount() - 1;
-//							todoAdapter.notifyItemInserted(position);
-//
-//							Toast.makeText(getApplicationContext(), "Added successfully", Toast.LENGTH_LONG).show();
-//							addEditText.setText("");
-//						} else {
-//							Toast.makeText(getApplicationContext(), "Failed to add item", Toast.LENGTH_LONG).show();
-//						}
-//					} else {
-//						Toast.makeText(getApplicationContext(), "Please enter something....", Toast.LENGTH_SHORT).show();
-//					}
-//				}
-//			});
     }
 }
